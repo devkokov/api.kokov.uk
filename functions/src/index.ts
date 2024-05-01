@@ -32,8 +32,8 @@ export const millionaireAge = onRequest(
         },
       }
     ).then((resp) => {
-      resp.text().then((data) => {
-        const price: number = JSON.parse(data)["currentPrice"];
+      resp.json().then((data) => {
+        const price: number = data.currentPrice;
         const quantity: number = +vusaShares.value();
         const value = price * quantity;
 
