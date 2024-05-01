@@ -22,6 +22,7 @@ export const millionaireAge = onRequest(
     ],
   },
   (request, response) => {
+    response.contentType("application/json");
     fetch(
       "https://demo.trading212.com/api/v0/equity/portfolio/VUSAl_EQ",
       {
@@ -36,16 +37,17 @@ export const millionaireAge = onRequest(
         const quantity: number = +vusaShares.value();
         const value = price * quantity;
 
+        const dobTime: number = +dob.value();
+        const dobDiff = Math.abs(Date.now() - dobTime * 1000);
+        let age = (dobDiff / (1000 * 3600 * 24)) / 365.25;
+
         if (value >= 1000000) {
-          response.send("Already a millionaire");
+          response.send(JSON.stringify({age: Math.floor(age)}));
           return;
         }
 
         const years = Math.log(1000000 / value) / Math.log(1.1);
-
-        const dobTime: number = +dob.value();
-        const dobDiff = Math.abs(Date.now() - dobTime * 1000);
-        const age = Math.floor((dobDiff / (1000 * 3600 * 24)) / 365.25 + years);
+        age = Math.floor(age + years);
 
         response.send(JSON.stringify({age}));
       });
