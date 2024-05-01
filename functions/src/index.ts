@@ -47,7 +47,7 @@ export const millionaireAge = onRequest(
         const dobDiff = Math.abs(Date.now() - dobTime * 1000);
         const age = Math.floor((dobDiff / (1000 * 3600 * 24)) / 365.25 + years);
 
-        response.send(`Millionaire at ${age}`);
+        response.send(JSON.stringify({age}));
       });
     });
   }
